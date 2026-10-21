@@ -87,3 +87,17 @@ out of the box.
 Copy `beamerthemeSheffield.sty` and `assets/` next to your `.tex` file,
 or put the `.sty` in `texmf/tex/latex/beamerthemeSheffield/` and the
 assets anywhere you point `\sheffieldassetdir{...}` at (default `assets`).
+
+## Previews
+
+| Title | Section divider | Big stat |
+|---|---|---|
+| ![](preview/title.png) | ![](preview/section.png) | ![](preview/bigstat.png) |
+
+## Licence & brand note
+
+Code is MIT-licensed. The University of Sheffield name, crest and "A World
+TOP 100 University" mark are the University's trademarks; this theme
+reproduces them from the University's own public presentation template for
+use by University staff and students. Unaffiliated use of the marks is not
+permitted by the University's brand guidelines.
