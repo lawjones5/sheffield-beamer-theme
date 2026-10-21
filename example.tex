@@ -1,0 +1,98 @@
+% =====================================================================
+% example.tex — University of Sheffield beamer theme demonstration
+% Compile:  pdflatex example.tex   (run twice for totals)
+% Requires: beamerthemeSheffield.sty + assets/ in the same directory
+% =====================================================================
+\documentclass[aspectratio=169]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage[watermark=arrows,sectionpages]{beamerthemeSheffield}
+
+\title{Core Presentation Template}
+\subtitle{A LaTeX theme for the University of Sheffield}
+\author{Author Name}
+\institute{The University of Sheffield}
+\date{October 2026}
+
+\begin{document}
+
+% --- Title slide (template layout CUSTOM_2_1) -----------------------
+\SheffieldTitlePage
+
+% --- Guidance --------------------------------------------------------
+\begin{frame}{Presentation guidance}
+  This theme mirrors the University's core presentation template:
+  \begin{itemize}
+    \item Source Sans Pro for text, Source Serif Pro for display type
+    \item Sheffield purple (\#440099) as the only accent colour
+    \item Quiet grey canvases with watermarked divider slides
+    \item Slides support the viewer --- content carries the argument
+  \end{itemize}
+\end{frame}
+
+% --- Title and text (template layout BLANK) --------------------------
+\begin{frame}{Title and text}
+  Fusce bibendum est leo, eu bibendum justo blandit sed. Mauris sit amet
+  mattis elit. Integer quis consequat lectus.
+
+  \begin{itemize}
+    \item Rutrum felis sit amet, faucibus metus
+    \item Pellentesque ultricies eu turpis sit amet sollicitudin
+    \item Vestibulum porttitor nulla porta eros gravida volutpat
+  \end{itemize}
+
+  Mauris sit amet mattis elit, \alert{integer quis consequat lectus}.
+\end{frame}
+
+% --- Section divider (template layout CUSTOM_3) ----------------------
+\SheffieldSectionPage{Section header}
+
+% --- Two equal columns (template layout BLANK_2) ---------------------
+\begin{frame}{2 equal columns}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      Fusce bibendum est leo, eu bibendum justo blandit sed
+
+      \medskip
+      Mauris sit amet mattis elit. Integer quis consequat lectus
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      Rutrum felis sit amet, faucibus metus.
+
+      \medskip
+      Pellentesque ultricies eu turpis sit amet sollicitudin.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --- Blocks ----------------------------------------------------------
+\begin{frame}{Blocks and tables}
+  \begin{block}{A finding}
+    Pellentesque ultricies eu turpis sit amet sollicitudin.
+  \end{block}
+  \begin{alertblock}{Key point}
+    Vestibulum porttitor nulla porta eros gravida volutpat.
+  \end{alertblock}
+
+  \vskip0.4em
+  \begin{tabular}{@{}lrr@{}}
+    \toprule
+    & \textbf{2025} & \textbf{2026} \\
+    \midrule
+    Fusce bibendum & 12 & 24 \\
+    Mauris mattis  &  8 & 19 \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+% --- Big stat (template layout CUSTOM_5) -----------------------------
+\begin{frame}{Big stat}
+  \SheffieldStat{87\%}{Rutrum felis sit amet, faucibus metus.
+    Pellentesque ultricies eu turpis sit amet sollicitudin.}
+\end{frame}
+
+% --- Closing (template layout CUSTOM_4) ------------------------------
+\SheffieldClosing{[EMAIL]}
+
+\end{document}

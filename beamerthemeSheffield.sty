@@ -1,0 +1,256 @@
+% =====================================================================
+% beamerthemeSheffield.sty
+% A LaTeX/Beamer theme for the University of Sheffield, modelled on the
+% University's official "Core Presentation Template" (template.pptx).
+%
+% Brand values extracted from the template:
+%   Purple   #440099   (accent, headings, big stats, crest)
+%   Ink      #131E29   (body text, bullets)
+%   Paper    #F3F3F3   (slide background)
+%   Mid grey #747775   (secondary text, page numbers)
+%   Fonts    Source Serif Pro (display) / Source Sans Pro (text)
+%
+% Usage:
+%   \usetheme[watermark=arrows]{Sheffield}   % section-page watermark:
+%                                            % rose|arrows|crown|book|none
+%   \usetheme[watermark=arrows,sectionpages]{Sheffield}
+%   \usetheme[nologos]{Sheffield}            % suppress crest / TOP 100 marks
+%
+%   \title{...}\subtitle{...}\author{...}\date{...}\institute{...}
+%   \SheffieldTitlePage                 % branded title frame
+%   \SheffieldSectionPage{My section}   % branded section divider
+%   \SheffieldStat{87\%}{Description of the statistic.}
+%   \SheffieldClosing{[EMAIL]}
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeSheffield}[2026/10/20 v1.0 University of Sheffield beamer theme]
+
+% ---------------------------------------------------------------------
+% Dependencies
+% ---------------------------------------------------------------------
+\RequirePackage{sourcesanspro}   % brand text face
+\RequirePackage{sourceserifpro}  % brand display face
+\RequirePackage{graphicx}
+
+% ---------------------------------------------------------------------
+% Options
+% ---------------------------------------------------------------------
+\newif\ifsheffield@sectionpages\sheffield@sectionpagesfalse
+\newif\ifsheffield@logos\sheffield@logostrue
+\def\sheffield@wmfile{bg-arrows}   % default section-page watermark
+
+\DeclareOptionBeamer{sectionpages}{\sheffield@sectionpagestrue}
+\DeclareOptionBeamer{nologos}{\sheffield@logosfalse}
+\DeclareOptionBeamer{watermark}{\csname sheffield@wm@#1\endcsname}
+\def\sheffield@wm@rose{\def\sheffield@wmfile{bg-rose}}
+\def\sheffield@wm@arrows{\def\sheffield@wmfile{bg-arrows}}
+\def\sheffield@wm@crown{\def\sheffield@wmfile{bg-crown}}
+\def\sheffield@wm@book{\def\sheffield@wmfile{bg-book}}
+\def\sheffield@wm@none{\let\sheffield@wmfile\undefined}
+\ProcessOptionsBeamer
+
+% ---------------------------------------------------------------------
+% Palette (from template.pptx)
+% ---------------------------------------------------------------------
+\definecolor{SheffieldPurple}{HTML}{440099}
+\definecolor{SheffieldInk}{HTML}{131E29}
+\definecolor{SheffieldPaper}{HTML}{F3F3F3}
+\definecolor{SheffieldMidGrey}{HTML}{747775}
+\definecolor{SheffieldLightGrey}{HTML}{A4A3A4}
+
+\setbeamercolor{background canvas}{bg=SheffieldPaper}
+\setbeamercolor{normal text}{fg=SheffieldInk,bg=SheffieldPaper}
+\setbeamercolor{structure}{fg=SheffieldPurple}
+\setbeamercolor{alerted text}{fg=SheffieldPurple}
+\setbeamercolor{frametitle}{fg=SheffieldInk}
+\setbeamercolor{title}{fg=SheffieldInk}
+\setbeamercolor{subtitle}{fg=SheffieldMidGrey}
+\setbeamercolor{author}{fg=SheffieldInk}
+\setbeamercolor{date}{fg=SheffieldMidGrey}
+\setbeamercolor{institute}{fg=SheffieldMidGrey}
+\setbeamercolor{section title}{fg=SheffieldInk}
+\setbeamercolor{footline}{fg=SheffieldMidGrey}
+\setbeamercolor{block title}{fg=SheffieldPurple,bg=white}
+\setbeamercolor{block body}{fg=SheffieldInk,bg=white}
+\setbeamercolor{block title alerted}{fg=white,bg=SheffieldPurple}
+\setbeamercolor{block body alerted}{fg=SheffieldInk,bg=white}
+\setbeamercolor{block title example}{fg=SheffieldInk,bg=SheffieldPaper}
+\setbeamercolor{block body example}{fg=SheffieldInk,bg=SheffieldPaper}
+\setbeamercolor{itemize item}{fg=SheffieldInk}
+\setbeamercolor{itemize subitem}{fg=SheffieldPurple}
+\setbeamercolor{itemize subsubitem}{fg=SheffieldMidGrey}
+\setbeamercolor{enumerate item}{fg=SheffieldPurple}
+\setbeamercolor{caption name}{fg=SheffieldPurple}
+\setbeamercolor{button}{bg=SheffieldPurple,fg=white}
+
+% ---------------------------------------------------------------------
+% Fonts  (template pt sizes scaled 25.4cm -> 16cm canvas, x0.63)
+%   title 54pt->34, subtitle 23pt->14.5, section 52pt->33,
+%   frametitle 30pt->19, big stat 140pt->88, body 18pt->11, page no 13pt->8
+% ---------------------------------------------------------------------
+\setbeamerfont{title}{size=\fontsize{34}{40},series=\bfseries}
+\setbeamerfont{subtitle}{size=\fontsize{14.5}{18}}
+\setbeamerfont{author}{size=\fontsize{12}{15}}
+\setbeamerfont{date}{size=\fontsize{10}{12}}
+\setbeamerfont{institute}{size=\fontsize{10}{12}}
+\setbeamerfont{frametitle}{size=\fontsize{19}{23},series=\bfseries}
+\setbeamerfont{section title}{size=\fontsize{33}{38},series=\bfseries}
+\setbeamerfont{footline}{size=\fontsize{8}{9}}
+\setbeamerfont{block title}{size=\fontsize{13}{15},series=\bfseries}
+\setbeamerfont{block body}{size=\fontsize{11}{13}}
+\setbeamerfont{itemize/enumerate body}{size=\fontsize{11}{13}}
+\setbeamerfont{itemize/enumerate subbody}{size=\fontsize{10}{12}}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\fontsize{9}{11}}
+\setbeamerfont{caption}{size=\fontsize{9}{11}}
+\setbeamerfont{alerted text}{series=\bfseries}
+
+\renewcommand{\familydefault}{\sfdefault}          % Source Sans Pro body
+\newcommand{\sheffieldserif}{\rmfamily\bfseries}   % Source Serif Pro display
+
+% Brand bullet: solid round bullet in ink (template master list style)
+\setbeamertemplate{itemize items}{\textbullet}
+\setbeamertemplate{itemize subitem}{--}
+\setbeamertemplate{itemize subsubitem}{\textperiodcentered}
+\setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded=false,shadow=false]
+\setbeamertemplate{caption}[numbered]
+
+% Slightly increased leading, echoing the template's 115% line spacing
+\renewcommand{\baselinestretch}{1.08}
+
+% ---------------------------------------------------------------------
+% Geometry: beamer's 16:9 canvas (16cm x 9cm) matches the 10in x 5.625in
+% template proportions; template margins (0.33in) scale to ~0.53cm.
+% ---------------------------------------------------------------------
+\setbeamersize{text margin left=0.55cm,text margin right=0.55cm}
+
+% ---------------------------------------------------------------------
+% Assets
+% ---------------------------------------------------------------------
+\newcommand{\sheffield@assets}{assets}
+\newcommand{\sheffieldassetdir}[1]{\def\sheffield@assets{#1}}
+
+% Full-bleed watermarked background (1920x1080 template art), or plain paper
+\newcommand{\sheffieldwatermarkbg}{%
+  \ifdefined\sheffield@wmfile
+    \includegraphics[width=\paperwidth,height=\paperheight]{\sheffield@assets/\sheffield@wmfile}%
+  \else
+    \color{SheffieldPaper}\rule{\paperwidth}{\paperheight}%
+  \fi}
+
+% ---------------------------------------------------------------------
+% Outer theme: frametitle + page number
+% ---------------------------------------------------------------------
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \vskip0.42cm%
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}%
+   \sheffieldserif\insertframetitle\par}%
+  \vskip0.14cm%
+  {\color{SheffieldPurple}\rule{1.6cm}{2pt}\par}%
+  \vskip0.12cm%
+}
+
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[ht=1.6ex,dp=1.0ex,rightskip=0.55cm,leftskip=0.55cm]{footline}
+    \hfill\insertframenumber
+  \end{beamercolorbox}}
+
+% ---------------------------------------------------------------------
+% Inner theme: title page (template layout CUSTOM_2_1)
+% ---------------------------------------------------------------------
+\setbeamertemplate{title page}{%
+  \nointerlineskip
+  \vskip0.35cm
+  \begin{beamercolorbox}[leftskip=0.53cm,rightskip=0.53cm]{title}
+    \raggedright
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\sheffieldserif\inserttitle\par}%
+  \end{beamercolorbox}
+  \vskip0.40cm
+  \begin{beamercolorbox}[leftskip=0.55cm,rightskip=0.55cm]{subtitle}
+    \raggedright
+    {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\sheffieldserif\insertsubtitle\par}%
+    \vskip0.25cm
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+    \vskip0.08cm
+    {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+    \vskip0.08cm
+    {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
+  \end{beamercolorbox}
+  \ifsheffield@logos
+    \vfill
+    \begin{beamercolorbox}[leftskip=0.45cm,rightskip=0.53cm]{}
+      \leavevmode
+      \raisebox{0.15cm}[0pt][0pt]{\includegraphics[height=0.96cm]{\sheffield@assets/crest-block}}%
+      \hfill
+      \raisebox{0.15cm}[0pt][0pt]{\includegraphics[height=0.96cm]{\sheffield@assets/top100}}%
+      \par
+    \end{beamercolorbox}
+    \vskip0.38cm
+  \fi
+}
+
+% ---------------------------------------------------------------------
+% Section page (template layout CUSTOM_3)
+% ---------------------------------------------------------------------
+\newcommand{\SheffieldSectionPage}[1]{%
+  {\usebackgroundtemplate{\sheffieldwatermarkbg}%
+  \begin{frame}[plain]
+    \nointerlineskip
+    \ifsheffield@logos
+      \vskip0.31cm
+      \hskip0.40cm\raisebox{-0.10cm}[0pt][0pt]{%
+        \includegraphics[height=0.83cm]{\sheffield@assets/crest-block}}\par
+    \fi
+    \vskip1.05cm
+    \begin{beamercolorbox}[leftskip=0.82cm,rightskip=0.82cm]{section title}
+      \raggedright
+      {\usebeamerfont{section title}\usebeamercolor[fg]{section title}%
+       \sheffieldserif#1\par}%
+    \end{beamercolorbox}
+  \end{frame}}}
+
+\ifsheffield@sectionpages
+  \AtBeginSection[]{\SheffieldSectionPage{\insertsection}}
+\fi
+
+% ---------------------------------------------------------------------
+% Big stat (template layout CUSTOM_5)
+% ---------------------------------------------------------------------
+\newcommand{\SheffieldStat}[2]{%
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.42\textwidth}
+      \vskip1.6em
+      {#2\par}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \vskip0.8em
+      {\color{SheffieldPurple}\sheffieldserif
+       \fontsize{88}{92}\selectfont#1\par}
+    \end{column}
+  \end{columns}}
+
+% ---------------------------------------------------------------------
+% Closing page (template layout CUSTOM_4: "Get in touch")
+% ---------------------------------------------------------------------
+\newcommand{\SheffieldClosing}[1]{%
+  {\begin{frame}[plain]
+    \vskip2.40cm
+    \begin{center}
+      \ifsheffield@logos
+        \includegraphics[height=2.06cm]{\sheffield@assets/crest-block}\\[1.05cm]
+      \fi
+      {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\sheffieldserif
+       Get in touch: \textcolor{SheffieldPurple}{\href{mailto:#1}{#1}}}\\[0.35cm]
+      {\usebeamerfont{date}\usebeamercolor[fg]{date}\href{https://www.sheffield.ac.uk}{www.sheffield.ac.uk}}
+    \end{center}
+  \end{frame}}}
+
+% ---------------------------------------------------------------------
+% Branded title frame (template layout CUSTOM_2_1: plain paper canvas)
+% ---------------------------------------------------------------------
+\newcommand{\SheffieldTitlePage}{%
+  {\begin{frame}[plain]\titlepage\end{frame}}}
+
+\endinput
