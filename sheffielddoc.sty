@@ -25,6 +25,35 @@
 \ProvidesPackage{sheffielddoc}[2026/10/21 v1.0 University of Sheffield document theme]
 
 \RequirePackage{geometry}
+\RequirePackage{kvoptions}
+% ---------------------------------------------------------------------
+% Options
+%   watermark=none|rose|arrows|crown|book
+%     places one of the template's coat-of-arms motifs in the blank
+%     space of the title page (below the purple band), bleeding off the
+%     right edge exactly as in the University's own artwork
+% ---------------------------------------------------------------------
+\SetupKeyvalOptions{family=sheffdoc,prefix=sheffdoc@}
+\DeclareStringOption[none]{watermark}[none]
+\ProcessKeyvalOptions*
+
+\def\sheffdoc@wm@rose{wm-rose}%
+\def\sheffdoc@wm@arrows{wm-arrows}%
+\def\sheffdoc@wm@crown{wm-crown}%
+\def\sheffdoc@wm@book{wm-book}%
+\def\sheffdoc@wm@none{}%
+% resolve option value to asset stem (unknown values fall back to none)
+\ifcsname sheffdoc@wm@\sheffdoc@watermark\endcsname
+  \edef\sheffdoc@wmfile{\csname sheffdoc@wm@\sheffdoc@watermark\endcsname}%
+\else
+  \let\sheffdoc@wmfile\empty
+\fi
+% Latin Modern before the brand faces: under MiKTeX (no cm-super), T1
+% Computer Modern resolves to bitmap PK fonts, which breaks microtype's
+% font expansion ("auto expansion is only possible with scalable fonts").
+% lmodern supplies scalable Type1 outlines; sourcesanspro then takes over
+% roman/sans, leaving the scalable lmtt for monospace.
+\IfFileExists{lmodern.sty}{\RequirePackage{lmodern}}{}
 \RequirePackage[sfdefault]{sourcesanspro}   % brand text face
 \RequirePackage{sourceserifpro}             % brand display face
 \RequirePackage[table]{xcolor}
@@ -150,7 +179,7 @@
   \fancyhead[L]{\footnotesize\color{MidGrey}#1}%
   \fancyhead[R]{\footnotesize\color{MidGrey}\nouppercase{\leftmark}}%
   \fancyfoot[L]{\footnotesize\color{MidGrey}\sheffdoc@dept}%
-  \fancyfoot[R]{\footnotesize\color{MidGrey}\raisebox{-0.5pt}{\sheffieldcrest[3.4mm]}\hspace{2.4mm}\thepage}%
+  \fancyfoot[R]{\footnotesize\color{MidGrey}\raisebox{-0.5pt}{\sheffieldcrest[5mm]}\hspace{2.4mm}\thepage}%
   \renewcommand{\sectionmark}[1]{\markboth{\thesection\quad ##1}{}}}
 
 % ---------------------------------------------------------------------
@@ -161,6 +190,13 @@
   \begin{tikzpicture}[remember picture,overlay]
     \fill[ShefPurple] (current page.north west) rectangle
       ([yshift=-120mm]current page.north east);
+    % motif watermark in the blank space below the band
+    \ifx\sheffdoc@wmfile\empty\else
+      \node[anchor=east,inner sep=0pt]
+        at ([xshift=8mm,yshift=-60mm]current page.east)
+        {\includegraphics[height=0.32\paperheight]%
+          {\sheffdoc@assets/\sheffdoc@wmfile}};
+    \fi
     \node[anchor=north east,inner sep=0pt]
       at ([xshift=-21mm,yshift=-14mm]current page.north east)
       {\includegraphics[height=44mm]{\sheffdoc@assets/crest-white}};
