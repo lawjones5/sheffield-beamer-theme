@@ -1,7 +1,12 @@
-# Sheffield LaTeX Beamer Theme
+# Sheffield LaTeX Themes
 
-A LaTeX/Beamer theme for the **University of Sheffield**, faithful to the
-University's official "Core Presentation Template" (`template.pptx`).
+Two LaTeX themes for the **University of Sheffield**, faithful to the
+University's official "Core Presentation Template" (`template.pptx`) and
+matching handout design:
+
+1. **Beamer presentation theme** — `beamerthemeSheffield.sty`
+2. **Document (article) theme** — `sheffielddoc.sty`, for handouts,
+   workshop notes and reports
 
 ## What it looks like
 
@@ -32,6 +37,44 @@ every slide type in the PowerPoint template:
 Font sizes are the template's, scaled to beamer's 16 cm x 9 cm 16:9 canvas
 (title 54→34 pt, section 52→33 pt, frame title 30→19 pt, body 18→11 pt,
 big stat 140→88 pt, page number 13→8 pt).
+
+## Document theme (handouts & reports)
+
+`sheffielddoc.sty` styles the `article` class with the same brand: Source
+Serif Pro headings in Sheffield purple over a full rule, Source Sans Pro
+body, the white crest on a purple title band, and a small crest beside the
+page number in the footer.
+
+```latex
+\documentclass[10pt,a4paper]{article}
+\usepackage[most]{tcolorbox}          % load BEFORE the theme
+\usepackage[hidelinks]{hyperref}
+\usepackage{sheffielddoc}
+\sheffdocheader{Short document title} % header left + footer dept
+
+\begin{document}
+\ShefDocTitle{Document title}{Subtitle}{Meta line}
+\ShefDocIntro{Left head}{Left text}{Right head}{Right text}
+
+\ShefStep{A numbered step}            % auto-numbered per section
+\begin{why}  ... \end{why}            % rationale box (purple side rule)
+\begin{vals}... \end{vals}            % values-to-enter box (light purple)
+\begin{chk}  ... \end{chk}            % checkpoint box
+\begin{fail} ... \end{fail}           % troubleshooting box (dashed)
+\ShefDocContact{[EMAIL]}
+\end{document}
+```
+
+Body helpers: `\ui{Button}`, `\val{Value}`, `\file{name}`, `\menu{A \sep B}`,
+`\boxlab{Label}`, `\sheffieldcrest[<height>]` (white crest). Sections,
+lists, tables and `tcolorbox` are pre-styled; geometry, headers and
+contents are set up automatically.
+
+A full example is `doc-example.tex` / `doc-example.pdf`.
+
+| Title page | Body page |
+|---|---|
+| ![](preview/doc-title.png) | ![](preview/doc-body.png) |
 
 ## Usage
 

@@ -1,0 +1,204 @@
+% =====================================================================
+% sheffielddoc.sty — University of Sheffield document (handout/report)
+% theme, extracted from the AeroCFD workshop handout design and the
+% University's core presentation template brand values.
+%
+%   Purple #440099 (headings, accents)  Ink #131E29 (text)
+%   Paper  #F3F3F3 (panels)             MidGrey #747775 (secondary)
+%   Source Serif Pro headings / Source Sans Pro text
+%
+% Usage (article class):
+%   \documentclass[10pt,a4paper]{article}
+%   \usepackage[most]{tcolorbox}     % load BEFORE the theme
+%   \usepackage{sheffielddoc}
+%   \sheffdocassets{assets}          % folder with crest-white.png (optional)
+%   \sheffdocheader{Short document title}
+%   ...
+%   \ShefDocTitle{Title}{Subtitle}{Meta line}
+%   \ShefDocIntro{Left head}{Left text}{Right head}{Right text}
+%
+%   Body tools:  \why / \vals / \chk / \fail / \asid boxes + \boxlab,
+%                \step{...} numbered steps, \ui \val \file \menu \sep,
+%                \sheffieldcrest[<height>]
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{sheffielddoc}[2026/10/21 v1.0 University of Sheffield document theme]
+
+\RequirePackage{geometry}
+\RequirePackage[sfdefault]{sourcesanspro}   % brand text face
+\RequirePackage{sourceserifpro}             % brand display face
+\RequirePackage[table]{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage{amsmath,amssymb}
+\RequirePackage{booktabs,array,tabularx}
+\RequirePackage{enumitem}
+\RequirePackage{fancyhdr}
+\RequirePackage{titlesec}
+
+% ---------------------------------------------------------------------
+% Palette
+% ---------------------------------------------------------------------
+\definecolor{ShefPurple}{HTML}{440099}
+\definecolor{Ink}{HTML}{131E29}
+\definecolor{Paper}{HTML}{F3F3F3}
+\definecolor{MidGrey}{HTML}{747775}
+\definecolor{LineGrey}{HTML}{D8D8D8}
+
+% ---------------------------------------------------------------------
+% Options / assets
+% ---------------------------------------------------------------------
+\def\sheffdoc@assets{assets}
+\newcommand{\sheffdocassets}[1]{\def\sheffdoc@assets{#1}}
+\def\sheffdoc@dept{The University of Sheffield}
+\newcommand{\sheffdocdept}[1]{\def\sheffdoc@dept{#1}}
+
+% The University crest, white version (reads on purple or light ground)
+\newcommand{\sheffieldcrest}[1][12mm]{%
+  \includegraphics[height=#1]{\sheffdoc@assets/crest-white}}
+
+% ---------------------------------------------------------------------
+% Page and text defaults
+% ---------------------------------------------------------------------
+\geometry{a4paper,left=21mm,right=21mm,top=25mm,bottom=22mm,
+  headheight=15pt,headsep=7mm,footskip=11mm}
+\color{Ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt}
+\linespread{1.04}
+
+\setlist[itemize]{leftmargin=1.1em,itemsep=1.5pt,topsep=2pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.4em,itemsep=1.5pt,topsep=2pt,parsep=0pt}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% ---------------------------------------------------------------------
+% Headings: serif purple section + full rule, ink subsections
+% ---------------------------------------------------------------------
+\titleformat{\section}[hang]
+  {\rmfamily\bfseries\fontsize{19}{22}\selectfont\color{ShefPurple}}
+  {\thesection}{0.55em}{}[\vspace{-2pt}{\color{ShefPurple}\rule{\textwidth}{0.8pt}}]
+\titlespacing*{\section}{0pt}{16pt}{9pt}
+
+\titleformat{\subsection}[hang]
+  {\rmfamily\bfseries\fontsize{12.5}{15}\selectfont\color{Ink}}
+  {\thesubsection}{0.5em}{}
+\titlespacing*{\subsection}{0pt}{13pt}{3pt}
+
+\titleformat{\subsubsection}[runin]
+  {\sffamily\bfseries\color{ShefPurple}}{}{0pt}{}[.]
+
+% ---------------------------------------------------------------------
+% Interface macros (instructions, values, files, menu paths)
+% ---------------------------------------------------------------------
+\newcommand{\ui}[1]{{\sffamily\bfseries #1}}                    % clickable control
+\newcommand{\val}[1]{{\sffamily\bfseries\color{ShefPurple}#1}}  % value to type
+\newcommand{\file}[1]{{\ttfamily\small #1}}
+\newcommand{\sep}{\,$\blacktriangleright$\,}
+\newcommand{\menu}[1]{{\sffamily\bfseries #1}}
+
+% ---------------------------------------------------------------------
+% Boxes
+% ---------------------------------------------------------------------
+\RequirePackage[most]{tcolorbox}
+
+\newtcolorbox{why}{enhanced,breakable,
+  colback=Paper,colframe=Paper,boxrule=0pt,leftrule=2.6pt,arc=0pt,outer arc=0pt,
+  left=9pt,right=9pt,top=5pt,bottom=6pt,borderline west={2.6pt}{0pt}{ShefPurple}}
+
+\newtcolorbox{vals}{enhanced,breakable,
+  colback=ShefPurple!4,colframe=ShefPurple!35,boxrule=0.5pt,arc=1pt,
+  left=8pt,right=8pt,top=4pt,bottom=5pt}
+
+\newtcolorbox{chk}{enhanced,breakable,
+  colback=white,colframe=MidGrey,boxrule=0.5pt,arc=0pt,
+  left=8pt,right=8pt,top=4pt,bottom=5pt}
+
+\newtcolorbox{fail}{enhanced,breakable,
+  colback=white,colframe=white,boxrule=0pt,arc=0pt,borderline={0.5pt}{0pt}{Ink!30,dashed},
+  left=8pt,right=8pt,top=4pt,bottom=5pt}
+
+\newtcolorbox{asid}{enhanced,breakable,
+  colback=white,colframe=white,boxrule=0pt,left=0pt,right=0pt,top=3pt,bottom=3pt}
+
+% box label: first line inside any box
+\newcommand{\boxlab}[1]{{\sffamily\bfseries\color{ShefPurple}#1}\par\vspace{1pt}}
+
+% ---------------------------------------------------------------------
+% Numbered steps:  <section>.<n>  Title
+% ---------------------------------------------------------------------
+\newcounter{shefstep}[section]
+\newcommand{\ShefStep}[1]{%
+  \par\addvspace{9pt}%
+  \refstepcounter{shefstep}%
+  \noindent\makebox[1.35cm][l]{%
+    {\rmfamily\bfseries\fontsize{13}{13}\selectfont\color{ShefPurple}%
+     \thesection.\theshefstep}}%
+  \begin{minipage}[t]{\dimexpr\linewidth-1.35cm\relax}%
+    {\rmfamily\bfseries\fontsize{11.5}{13}\selectfont #1}\par\vspace{2pt}%
+  \end{minipage}\par\nopagebreak\vspace{1pt}}
+\providecommand{\step}{\ShefStep}   % short alias unless already taken
+
+% ---------------------------------------------------------------------
+% Header / footer
+% ---------------------------------------------------------------------
+\newcommand{\sheffdocheader}[1]{%
+  \pagestyle{fancy}%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancyhead[L]{\footnotesize\color{MidGrey}#1}%
+  \fancyhead[R]{\footnotesize\color{MidGrey}\nouppercase{\leftmark}}%
+  \fancyfoot[L]{\footnotesize\color{MidGrey}\sheffdoc@dept}%
+  \fancyfoot[R]{\footnotesize\color{MidGrey}\raisebox{-0.5pt}{\sheffieldcrest[3.4mm]}\hspace{2.4mm}\thepage}%
+  \renewcommand{\sectionmark}[1]{\markboth{\thesection\quad ##1}{}}}
+
+% ---------------------------------------------------------------------
+% Title page: purple band, white crest, kicker, serif title
+% ---------------------------------------------------------------------
+\newcommand{\ShefDocTitle}[3]{%
+  \thispagestyle{empty}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[ShefPurple] (current page.north west) rectangle
+      ([yshift=-120mm]current page.north east);
+    \node[anchor=north east,inner sep=0pt]
+      at ([xshift=-21mm,yshift=-14mm]current page.north east)
+      {\includegraphics[height=44mm]{\sheffdoc@assets/crest-white}};
+  \end{tikzpicture}%
+  \vspace*{12mm}%
+  {\color{white}\sffamily\bfseries\footnotesize
+   \MakeUppercase{\sheffdoc@dept}\par}%
+  \vspace{26mm}%
+  {\color{white}\rmfamily\bfseries\fontsize{27}{31}\selectfont #1\par}%
+  \vspace{5mm}%
+  {\color{white}\sffamily\fontsize{13}{17}\selectfont #2\par}%
+  \vspace{7mm}%
+  {\color{white}\sffamily\footnotesize #3\par}%
+  \vspace{26mm}}
+
+% two-column introduction block for the title page
+\newcommand{\ShefDocIntro}[4]{%
+  \noindent
+  \begin{minipage}[t]{0.47\textwidth}
+    {\sffamily\bfseries\color{ShefPurple}#1}\par\vspace{4pt}
+    {\small #2}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.47\textwidth}
+    {\sffamily\bfseries\color{ShefPurple}#3}\par\vspace{4pt}
+    {\small #4}
+  \end{minipage}\par\vspace{4pt}}
+
+% ---------------------------------------------------------------------
+% Closing contact block
+% ---------------------------------------------------------------------
+\newcommand{\ShefDocContact}[1]{%
+  \par\addvspace{14pt}%
+  \noindent{\color{ShefPurple}\rule{\textwidth}{0.8pt}}\par\vspace{6pt}%
+  {\sffamily\bfseries\color{ShefPurple}Get in touch:} {\sffamily #1}%
+  {\sffamily\color{MidGrey} \quad$\cdot$\quad \href{https://www.sheffield.ac.uk}{www.sheffield.ac.uk}}\par}
+
+% hyperref: leave to the user, but make \ShefDocContact degrade gracefully
+\@ifundefined{href}{\newcommand{\href}[2]{#2}}{}
+\@ifundefined{MakeUppercase}{\newcommand{\MakeUppercase}[1]{#1}}{}
+
+\endinput

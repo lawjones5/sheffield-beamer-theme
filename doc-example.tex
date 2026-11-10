@@ -1,0 +1,128 @@
+% =====================================================================
+% doc-example.tex — sheffielddoc.sty demonstration handout
+% Compile:  pdflatex doc-example.tex  (twice, for TOC/refs)
+% Needs:    sheffielddoc.sty + assets/crest-white.png beside this file
+% =====================================================================
+\documentclass[10pt,a4paper]{article}
+\usepackage[most]{tcolorbox}   % load before the theme
+\usepackage{longtable,multirow,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{sheffielddoc}
+
+\sheffdocheader{Introduction to Aerodynamic CFD}
+
+\begin{document}
+
+% --- Title page ------------------------------------------------------
+\ShefDocTitle
+  {Introduction to Aerodynamic CFD}
+  {A rocket fin, from STEP file to lift coefficient}
+  {Student handout \quad$\cdot$\quad ANSYS 2023 R2 / 2024 R1 \quad$\cdot$\quad a three-hour workshop}
+
+\ShefDocIntro
+  {What this document is}
+  {A complete, click-by-click record of the workshop: every number you type,
+   and the reason it is that number rather than another.}
+  {What you need}
+  {ANSYS Workbench with Fluent and Discovery, the file \file{fin.step} from
+   the course folder, and roughly 6\,GB of free disk.}
+
+\vfill
+{\footnotesize\color{MidGrey}
+ Version 1.0. Prepared for undergraduate teaching.\par}
+\clearpage
+
+% --- Front matter ----------------------------------------------------
+\section*{How to use this handout}
+\markboth{How to use this handout}{}
+\addcontentsline{toc}{section}{How to use this handout}
+
+The workshop moves through four stages --- geometry, mesh, solution,
+post-processing. Each stage has the same shape:
+
+\begin{itemize}
+  \item \ui{Bold sans} is a button, tab, panel or dropdown you can click.
+  \item \val{Purple bold} is a value you type or select.
+  \item \menu{File \sep Preferences} is a menu path: click \ui{File}, then
+    \ui{Preferences}.
+  \item \file{monospace} is a file name or a name in a tree.
+\end{itemize}
+
+\begin{center}
+\small
+\begin{tabular}{@{}L{0.17\textwidth}L{0.74\textwidth}@{}}
+\toprule
+\textbf{Element} & \textbf{What it does}\\
+\midrule
+\textbf{Why} & the theory that makes the next click defensible.\\
+\textbf{Do this} & the numbered sequence of clicks and the exact values.\\
+\textbf{Checkpoint} & what the screen should look like when the step worked.\\
+\textbf{If it goes wrong} & the failures that actually happen, and the fix.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+% --- Body ------------------------------------------------------------
+\section{The case: a fin, and the four numbers that define it}
+
+\subsection{Geometry}
+
+The course folder contains \file{fin.step}: a model rocket fin with a swept
+leading edge, a trapezoidal planform and a sharp trailing edge.
+
+\begin{why}
+\boxlab{Why the Reynolds number comes first}
+Every decision downstream --- the size of the first cell at the wall, the
+density of the wake --- depends on the Reynolds number. It is fixed by the
+chord, the speed and the air, and nothing later in the workflow can repair
+choosing it carelessly.
+\end{why}
+
+\ShefStep{Set the operating point}
+
+Run the case at \val{U = 40 m/s}, sea level. With $c = 250$\,mm this gives
+$Re \approx 5.1\times10^{5}$ --- fully turbulent over most of the fin.
+
+\begin{vals}
+\boxlab{Values to enter}
+\begin{itemize}
+  \item Velocity magnitude: \val{40 m/s}
+  \item Density (constant): \val{1.225 kg/m\textsuperscript{3}}
+  \item Viscosity: \val{1.7894e-05 kg/m\,s}
+\end{itemize}
+\end{vals}
+
+\begin{chk}
+\boxlab{Checkpoint}
+The boundary-condition panel reads \ui{velocity-inlet}, magnitude
+\val{40}, and the residual monitor starts near $10^{-1}$.
+\end{chk}
+
+\begin{fail}
+\boxlab{If it goes wrong: the mesh will not fill}
+If the fill fails with a negative-volume error, the fluid body is not
+watertight: go back to \S2.4, run the fault-isolating tool, and re-check
+the share topology before retrying.
+\end{fail}
+
+\begin{asid}
+{\small\color{MidGrey}Aside: the fin is thin, so the spanwise flow is
+weak; a symmetry treatment would be defensible but we model the full
+span for cleaner post-processing.}
+\end{asid}
+
+\subsection{What the solver actually solves}
+
+For an incompressible, steady case Fluent solves the Reynolds-averaged
+momentum equations plus continuity; see the handout appendix for the
+discretisation settings and their defaults.
+
+\section{Closing}
+
+\ShefDocContact{mech-eng-workshops@sheffield.ac.uk}
+
+\end{document}
